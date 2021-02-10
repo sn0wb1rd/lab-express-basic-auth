@@ -53,19 +53,23 @@ router.post("/signup", (req, res, next) => {
 // POST || request for /singin
 router.post("/signin", (req, res, next) => {
   const {email, password} = req.body
-  // console.log(req.body) // check
+  console.log('reqbody: ', req.body) // check
 
   // implement the same set of validations as you did in signup as well
   // NOTE: We have used the Async method here. Its just to show how it works
   UserModel.findOne({email: email})
       .then((result) => {
+        console.log(email)
           //if user exists
           if (result) {
               //Using SYNC bcrypt method -----  
               //check if pw match with the db
               let isMatching = bcrypt.compareSync(password, result.password)
               if (isMatching) {
+                console.log('check3')
                   // signin succesfull
+                  req.session.userData = result
+                  req.session.areyoutired = false
                   res.redirect('/profile')
               }
               else {
@@ -99,14 +103,25 @@ router.post("/signin", (req, res, next) => {
       }) 
 });
 
-
-
-
-
+// Middleware to prorect routes
+const checkLoggedInUser = (req, res, next) => {
+  if (req.session.UserData) {
+    console.log('check loggenin user')
+    next()
+  }
+  else {
+    res.redirect('/signin')
+  }
+}
 // GET || request for /profile
-router.get('/profile', (req, res, next) => {
-  res.render('profile.hbs')
+// router.get('/profile', (req, res, next) => {
+//   res.render('profile.hbs')
+// })
+router.get('/profile', checkLoggedInUser, (req, res, next) => {
+  let email = req.session.UserData.email
+  res.render('profile.hbs', {email})
 })
+
 
 
 

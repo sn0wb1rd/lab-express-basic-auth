@@ -26,7 +26,7 @@ app.locals.title = `${capitalized(projectName)}- Generated with IronGenerator`;
 
 // set up connect Mongo
 const session = require('express-session');
-const MongoStore = require('connect-mongo'(session))
+const MongoStore = require('connect-mongo')(session)
 const mongoose = require('mongoose');
 
 app.use(session({
