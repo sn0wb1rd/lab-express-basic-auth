@@ -1,11 +1,15 @@
 <h1>Hello, the signIN page</h1>
-<form action="/signin" methode="POST">
-<label>Email</label>
-<input name="email" type="email" placeholder="Enter email">
+<form action="/signin" method="POST">
+    <label>Email</label>
+    <input name="email" type="email" placeholder="Enter email">
 
-<label>Password</label>
-<input name="password" type="text" placeholder="Enter password">
+    <label>Password</label>
+    <input name="password" type="password" placeholder="Enter password">
 
-<button type="submit">Sign me in!</button>
+    <button type="submit">Sign me in!</button>
 </form>
 
+{{!-- When password does not match with the email (so, incorrect password):  --}}
+{{#if msg}}
+    <div class="error"> {{msg}} </div>
+{{/if}}
